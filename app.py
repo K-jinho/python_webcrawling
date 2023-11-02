@@ -11,9 +11,12 @@ f = open(fileName, 'w', encoding='utf-8')
 f.write("")
 f.close
 
-# url 파싱 : 컴퓨터가 이해할수 있는 언어로 교체 (url부분으로 인식할수있게)
 
-url = urlopen('https://www.koreabaseball.com/')
+# 사용자에게 입력값을 받기
+address = input("크롤링할 웹 주소 : ")
+
+# url 파싱 : 컴퓨터가 이해할수 있는 언어로 교체 (url부분으로 인식할수있게)
+url = urlopen(address)
 
 #html 파싱
 soup = BeautifulSoup(url, 'html.parser')
