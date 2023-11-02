@@ -1,4 +1,4 @@
 http://maps.google.co.kr/maps?hl=ko&tab=wl
 http://www.google.co.kr/history/optout?hl=ko
 http://www.google.co.kr/intl/ko/services/
-http://www.google.com/setprefdomain?prefdom=KR&prev=http://www.google.co.kr/&sig=K_hO4vD6R0frEq_gxSac2kh7aYn0k%3D
+http://www.google.com/setprefdomain?prefdom=KR&prev=http://www.google.co.kr/&sig=K_Rw_le8uXvdHArKA8znDZs9KRsy4%3D

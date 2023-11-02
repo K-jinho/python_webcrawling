@@ -12,8 +12,11 @@ f.write("")
 f.close
 
 
-# 사용자에게 입력값을 받기
+# 사용자에게 입력값을 받기 / http형태로 처리하기
 address = input("크롤링할 웹 주소 : ")
+first7Chars = address[0:7]
+if (first7Chars != 'http://' and first7Chars != 'https://'):
+    address = 'http://' + address
 
 # url 파싱 : 컴퓨터가 이해할수 있는 언어로 교체 (url부분으로 인식할수있게)
 url = urlopen(address)
