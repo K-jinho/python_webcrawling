@@ -5,12 +5,20 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
+# 메모장 초기화
+fileName = 'output.txt'
+f = open(fileName, 'w', encoding='utf-8')
+f.write("")
+f.close
+
 # url 파싱 : 컴퓨터가 이해할수 있는 언어로 교체 (url부분으로 인식할수있게)
 
 url = urlopen('https://www.koreabaseball.com/')
 
 #html 파싱
 soup = BeautifulSoup(url, 'html.parser')
+
+
 
 # a 태그 추출
 for i in soup.select('a'):
