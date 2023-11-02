@@ -21,3 +21,9 @@ for i in soup.select('a'):
         continue
 
     print(link)
+
+    #메모장에 저장
+    fileName = 'output.txt'
+    f = open(fileName, 'a', encoding='utf-8') #a는 이어넣기, w는 덮어쓰기
+    f.write(link + "\n")
+    f.close
