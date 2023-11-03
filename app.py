@@ -8,10 +8,11 @@ from urllib.request import urlopen
 
 try:
     # 메모장 초기화
-    fileName = 'output.txt'
+    output = input('원하는 메모장 이름을 적어주세요. : ')
+    fileName = output + '.txt'
     f = open(fileName, 'w', encoding='utf-8')
     f.write("")
-    f.close
+    f.close()
 
 
     # 사용자에게 입력값을 받기 / http형태로 처리하기
@@ -39,10 +40,10 @@ try:
         print(link)
 
         #메모장에 저장
-        fileName = 'output.txt'
+        
         f = open(fileName, 'a', encoding='utf-8') #a는 이어넣기, w는 덮어쓰기
         f.write(link + "\n")
-        f.close
+        f.close()
 
 # 에러처리
 except Exception as log:
