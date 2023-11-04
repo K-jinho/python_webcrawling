@@ -1,0 +1,9 @@
+#flask 설치과정 
+pip install flask 
+python
+>>> import flask
+exit
+
+
+python app.py
+localhost:5000
