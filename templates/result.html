@@ -10,30 +10,29 @@
   </head>
   <body>
     <div class="s01">
-      <form action="/action " method="POST">
-        <fieldset>
-          <legend>url 추출기</legend>
-        </fieldset>
-
-        <div style="color:black;">
-          {% if log %}
-            에러가 발생했습니다.<br>
-            원인 : {% print(log) %}
-          {% endif %}
-        </div> 
-        
-        <div class="inner-form">
+      <form action="/" method="POST">
+        <!-- Jinja2 문법 : HTML에 파이썬의 추가작업을 수행하게 하는 언어 -->
+        <div class="inner-form" style="color:white;">
           <div class="input-field first-wrap">
-            <input name="url"id="search" type="text" placeholder="추출을 원하는 사이트" />
+            <h5>파일명:</h5>
+            <h1> {% print(fileName) %} </h1>
           </div>
-          <div class="input-field second-wrap">
-            <input name="fileName"id="search" type="text" placeholder="메모장 파일 이름" />
+          <div>
+            <ul id="result">
+                {% for i in f %}
+                    <li>{{i}}</li> 
+                {% endfor %}
+            </ul>
           </div>
           <div class="input-field third-wrap">
-            <button class="btn-search" type="submit">Action</button>
+            <button class="btn-search" type="submit">뒤로</button>
+            <button class="btn-search" type="button" style="margin-top: 10px;" onclick="copy('#result')">복사</button>
           </div>
         </div>
       </form>
     </div>
+
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/copy.js') }}"></script>
   </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

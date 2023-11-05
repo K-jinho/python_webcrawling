@@ -1,5 +1,5 @@
 #웹 크롤러
-
+# -*- encoding: utf-8 -*-
 # pip install bs4
 
 from bs4 import BeautifulSoup
@@ -24,7 +24,7 @@ def action():
 
         # 메모장 초기화
         fileName = fileName + '.txt'
-        f = open(fileName, 'w', encoding='utf-8')
+        f = open('templates/' +fileName, 'w', encoding='utf-8')
         f.write("")
         f.close()
 
@@ -53,16 +53,20 @@ def action():
             print(link)
             
             #메모장에 저장
-            f = open(fileName, 'a', encoding='utf-8') #a는 이어넣기, w는 덮어쓰기
+            f = open('templates/' +fileName, 'a', encoding='utf-8') #a는 이어넣기, w는 덮어쓰기
             f.write(link + "\n")
             f.close()
 
+        # 파일 보기 화면으로 이동
+        f = open('templates/' +fileName, 'r', encoding='utf-8')
+        f = f.readlines()
+        print(f)
+        return render_template('result.html', f=f, fileName=fileName)
 
-        return render_template('index.html')
     # 에러처리
     except Exception as log:
         print('에러발생. 원인:', log)
-
+        return render_template('index.html', log=log)
     
 
 
