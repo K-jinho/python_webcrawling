@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,600,700" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+  <title>API 요청 URL 생성</title>
+</head>
+
+<body>
+  <div class="s009">
+    <form>
+      <div class="inner-form">
+        <div class="basic-search">
+          <div class="input-field">
+            <div id="apiUrlDisplay">
+              <span id="apiUrl"></span>
+              <div class="icon-wrap">
+                <svg class="svg-inline--fa fa-search fa-w-16" data-icon="search" role="img" viewBox="0 0 512 512">
+                  <path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="advance-search">
+          <div class="row">
+            <div class="input-field">
+              <div class="input-select">
+                <select name="c_position" id="position" required>
+                  <option value="" disabled selected hidden>포지션 선택</option>
+                  <option value="투수">투수</option>
+                  <option value="타자">타자</option>
+                  <option value="주루">주루</option>
+                  <option value="수비">수비</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-field">
+              <div class="input-select">
+                <select name="c_year" id="year" onchange="updateTeamOptions()" required>
+                  <option value="" disabled selected hidden>연도 선택</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                  <option value="2020">2020</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-field">
+              <div class="input-select">
+                <select name="c_season" id="season" required>
+                  <option value="KBO 정규시즌">KBO 정규시즌</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row second">
+            <div class="input-field">
+              <div class="input-select">
+                <select name="c_team" id="team">
+                  <option value="" disabled selected hidden>팀 선택</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-field">
+              <div class="input-select">
+                <label for="playerName"></label>
+                <input type="text" id="playerName" name="playerName" placeholder="야구선수 입력">
+              </div>
+            </div>
+            <div class="input-field"></div>
+          </div>
+          <div class="row third">
+            <div class="input-field">
+              <div class="result-count">
+                <span></span>
+              </div>
+              <div class="group-btn">
+                <input class="btn-search" type="button" value="URL 생성" onclick="generateApiUrl()">
+                <input class="btn-search" type="button" value="이동" onclick="redirectToApiUrl()" id="moveButton" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script>
+    // 초기 선택 가능한 팀 목록
+    var initialTeamChoices = [
+      { value: '', label: '팀 선택', selected: true, disabled: true }
+    ];
+
+    // 년도 별 팀 업데이트
+    function updateTeamOptions() {
+      var year = document.getElementById("year").value;
+      var teamDropdown = document.getElementById("team");
+
+      // 지우기 기능 없이 간단하게 변경
+      var teamChoices = getTeamChoices(year);
+      updateSelectOptions(teamDropdown, initialTeamChoices.concat(teamChoices));
+    }
+
+    // 선택 가능한 팀 목록을 반환하는 함수
+    function getTeamChoices(year) {
+      if (year == "2022" || year == "2021") {
+        return [
+          { value: 'LG', label: 'LG' },
+          { value: '두산', label: '두산' },
+          { value: 'SSG', label: 'SSG' },
+          { value: '삼성', label: '삼성' },
+          { value: 'KT', label: 'KT' },
+          { value: '한화', label: '한화' },
+          { value: '키움', label: '키움' },
+          { value: 'KIA', label: 'KIA' },
+          { value: 'NC', label: 'NC' },
+          { value: '롯데', label: '롯데' }
+        ];
+      } else {
+        return [
+          { value: 'LG', label: 'LG' },
+          { value: '두산', label: '두산' },
+          { value: 'SK', label: 'SK' },
+          { value: '삼성', label: '삼성' },
+          { value: 'KT', label: 'KT' },
+          { value: '한화', label: '한화' },
+          { value: '키움', label: '키움' },
+          { value: 'KIA', label: 'KIA' },
+          { value: 'NC', label: 'NC' },
+          { value: '롯데', label: '롯데' }
+        ];
+      }
+    }
+
+    // select 요소의 옵션을 업데이트하는 함수
+    function updateSelectOptions(selectElement, newOptions) {
+      // 기존 옵션 제거
+      selectElement.innerHTML = '';
+
+      // 새로운 옵션 추가
+      newOptions.forEach(function (option) {
+        var optionElement = document.createElement('option');
+        optionElement.value = option.value;
+        optionElement.text = option.label;
+        optionElement.selected = option.selected || false;
+        optionElement.disabled = option.disabled || false;
+        selectElement.add(optionElement);
+      });
+    }
+
+    // select로 만들어진 결과값을 url형태로 바꿔주는 함수
+    function generateApiUrl() {
+      var position = document.getElementById("position").value;
+      var year = document.getElementById("year").value;
+      var season = document.getElementById("season").value;
+      var team = document.getElementById("team").value;
+      var playerName = document.getElementById("playerName").value;
+
+      // URL 조합
+      var apiUrl = "http://127.0.0.1:5000/api/";
+      season = "regular";
+
+      if (position) {
+        if (position == "타자") {
+          position = "hitter";
+        } else if (position == "투수") {
+          position = "pitcher";
+        } else if (position == "주루") {
+          position = "runner";
+        } else if (position == "수비") {
+          position = "defender";
+        }
+      }
+
+      if (position && year && season) {
+        apiUrl += position + "/" + year + "/" + season;
+
+        // 추가 선택 항목이 있는 경우
+        if (team && !playerName) {
+          apiUrl += "?team_name=" + encodeURIComponent(team);
+        }
+        // 선수 이름이 입력된 경우
+        else if (!team && playerName) {
+          apiUrl += "?player_name=" + encodeURIComponent(playerName);
+        }
+        // 둘 다 입력된 경우
+        else if (team && playerName) {
+          apiUrl += "?team_name=" + encodeURIComponent(team);
+          apiUrl += "&player_name=" + encodeURIComponent(playerName);
+        }
+
+        // 결과 표시
+        apiUrl = apiUrl.replace("API URL: ", ""); // "API URL:" 문자열을 제거합니다.
+        var apiUrlSpan = document.getElementById("apiUrl");
+        apiUrlSpan.innerText = apiUrl;
+        apiUrlSpan.classList.add("generated"); // 클래스 추가
+
+        document.getElementById("moveButton").disabled = false;
+      } else {
+        alert("포지션, 연도, 시즌은 필수 선택 항목입니다.");
+      }
+    }
+
+    // url로 이동해주는 함수
+    function redirectToApiUrl() {
+      var apiUrl = document.getElementById("apiUrl").innerText;
+
+      if (apiUrl) {
+        // URL로 이동
+        window.location.href = decodeURIComponent(apiUrl);
+      } else {
+        alert("먼저 API 요청 URL을 생성하세요.");
+      }
+    }
+
+    // 초기 선택 가능한 팀 목록을 반영
+    updateTeamOptions();
+  </script>
+</body>
+
+</html>
